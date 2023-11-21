@@ -25,13 +25,13 @@ public class NewsArticleController {
     }
     @PostMapping("/add")
     public ResponseEntity addArticle(@RequestBody @Valid NewsArticle newsArticle , Errors errors){
-        if(errors.hasErrors()) return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getFieldError().getDefaultMessage());
+        if(errors.hasErrors()) return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(errors.getFieldError().getDefaultMessage(),HttpStatus.BAD_REQUEST.toString()));
         newsArticleService.add(newsArticle);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Article added",HttpStatus.OK.toString()));
     }
 @PutMapping("/update/{id}")
     public ResponseEntity updateArticle(@PathVariable String id , @RequestBody @Valid NewsArticle newsArticle, Errors errors){
-        if(errors.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getFieldError().getDefaultMessage());
+        if(errors.hasErrors()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(errors.getFieldError().getDefaultMessage(),HttpStatus.BAD_REQUEST.toString()));
         if(newsArticleService.update(id,newsArticle)){
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Article updated",HttpStatus.OK.toString()));
         }else{
